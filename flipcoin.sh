@@ -146,7 +146,74 @@ done
 
 
 
-echo "give choice for 1-Flip, 2-cehck singlet, 3-doublets, 4-triplets"
+#UC5
+
+function winningCombination(){
+
+echo "enter upto how many iterations you want to do for doublets:"
+read num_iterations
+
+declare -A counts_singlet counts_doublet counts_triplet
+
+for ((i = 0; i < num_iterations; i++)); do
+
+    toss1=$((RANDOM % 2))
+    toss2=$((RANDOM % 2))
+    toss3=$((RANDOM % 2))
+
+    singlet=""
+    doublet=""
+    triplet=""
+
+    case $toss1 in
+        0) singlet+="H";;
+        1) singlet+="T";;
+    esac
+
+    case $toss2 in
+        0) doublet+="H";;
+        1) doublet+="T";;
+    esac
+
+    case $toss3 in
+        0) doublet+="H"; triplet+="H";;
+        1) doublet+="T"; triplet+="T";;
+    esac
+
+
+    ((counts_singlet[$singlet]++))
+    ((counts_doublet[$doublet]++))
+    ((counts_triplet[$triplet]++))
+done
+
+
+find_winning_combination() {
+    local -n counts=$1
+    local winning_combination
+    local max_count=0
+
+    for combination in "${!counts[@]}"; do
+        count=${counts[$combination]}
+        if ((count > max_count)); then
+            max_count=$count
+            winning_combination=$combination
+        fi
+    done
+
+    echo "$winning_combination"
+}
+
+winning_singlet=$(find_winning_combination counts_singlet)
+winning_doublet=$(find_winning_combination counts_doublet)
+winning_triplet=$(find_winning_combination counts_triplet)
+
+echo "Winning Singlet Combination: $winning_singlet"
+echo "Winning Doublet Combination: $winning_doublet"
+echo "Winning Triplet Combination: $winning_triplet"
+
+}
+
+echo "give choice for 1-Flip, 2-cehck singlet, 3-doublets, 4-triplets, 5-winning compositions"
 read choice
 
 case $choice  in 
@@ -164,6 +231,10 @@ case $choice  in
 
 	4)
 	triplet
+	;;
+
+	5)
+	winningCombination
 	;;
 
 	*)
