@@ -37,7 +37,54 @@ percentageTail=$((percent-percentageHead))
 echo "Percentage of heads is $percentHead and percentage of tail is $percentageTail"
 }
 
-echo "give choice for 1-Flip, 2-cehck singlet"
+
+#UC3
+
+function doublet (){
+declare -A arr
+
+echo "enter upto how many iterations you want to do for doublets:"
+read itr
+
+for ((i=0;i<$itr;i++));
+do
+	flip1=$((RANDOM%2))
+	flip2=$((RANDOM%2))
+
+case "$flip1$flip2" in
+
+	00)
+	doublet="TT"
+	;;
+	01)
+	doublet="TH"
+	;;
+	10)
+	doublet="HT"
+	;;
+	11)
+	doublet="HH"
+	;;
+	*)
+	echo "invalid input"
+	;;
+esac
+
+((arr[$doublet]++))
+
+done
+
+
+for combination in HH HT TH TT;
+do
+	percentage=$(( (arr["$combination"] * 100) / itr))
+	 echo "$combination: $percentage%"
+
+done
+}
+
+
+echo "give choice for 1-Flip, 2-cehck singlet, 3-doublets"
 read choice
 
 case $choice  in 
@@ -47,6 +94,10 @@ case $choice  in
 
 	2)
 	checksinglet
+	;;
+
+	3)
+	doublet
 	;;
 
 	*)
