@@ -84,7 +84,69 @@ done
 }
 
 
-echo "give choice for 1-Flip, 2-cehck singlet, 3-doublets"
+
+# UC4
+
+function triplet (){
+
+declare -A arr
+
+echo "enter upto how many iterations you want to do for doublets:"
+read itr
+
+for ((i=0;i<$itr;i++));
+do
+        flip1=$((RANDOM%2))
+        flip2=$((RANDOM%2))
+	flip3=$((RANDOM%2))
+
+case "$flip1$flip2$flip3" in
+
+        000)
+        triplet="TTT"
+        ;;
+        001)
+        triplet="TTH"
+        ;;
+        010)
+        triplet="THT"
+        ;;
+	100)
+        triplet="HTT"
+        ;;
+        011)
+        triplet="THH"
+        ;;
+	101)
+        triplet="HTH"
+        ;;
+        110)
+        triplet="HHT"
+        ;;
+        111)
+        triplet="HHH"
+        ;;
+
+        *)
+        echo "invalid input"
+        ;;
+esac
+
+((arr[$triplet]++))
+
+done
+
+for combination in HHH HHT HTH THH HTT THT TTH TTT;
+do
+        percentage=$(( (arr["$combination"] * 100) / itr))
+         echo "$combination: $percentage%"
+
+done
+}
+
+
+
+echo "give choice for 1-Flip, 2-cehck singlet, 3-doublets, 4-triplets"
 read choice
 
 case $choice  in 
@@ -98,6 +160,10 @@ case $choice  in
 
 	3)
 	doublet
+	;;
+
+	4)
+	triplet
 	;;
 
 	*)
