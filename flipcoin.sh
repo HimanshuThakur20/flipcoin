@@ -33,7 +33,7 @@ done
 
 percentHead=$(($count*100/$n))
 percent='100'
-percentageTail=$((percent-percentageHead))
+percentageTail=$(($percent-$percentHead))
 echo "Percentage of heads is $percentHead and percentage of tail is $percentageTail"
 }
 
